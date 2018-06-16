@@ -21,9 +21,15 @@ int myAtoi(string str)
         {
             cout << "Here";
             if(ans < INT_MIN)
+            {
                 ans = INT_MIN;
+                return ans;
+            }
             else if(ans > INT_MAX)
+            {
                 ans = INT_MAX;
+                return ans;
+            }
             else{
                 ans = 10*ans + (int)str[i];
             }
