@@ -43,6 +43,6 @@ TreeNode *invertTree(TreeNode *root)
 
 int main()
 {
-    cout << "Hello world!" << endl;
+
     return 0;
 }
