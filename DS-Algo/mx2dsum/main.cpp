@@ -188,5 +188,4 @@ int main()
 
     int ans = findMaxSum(M);
     cout << ans <<endl;
-    return 0;
 }
