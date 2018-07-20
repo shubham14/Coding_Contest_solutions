@@ -14,11 +14,12 @@ class Solution:
         N = len(mat)
         for x in range(0, int(N/2)):
             for y in range(x, N-x-1):
-                temp = mat[x][y]
-                mat[x][y] = mat[y][N-1-x]
-                mat[y][N-1-x] = mat[N-1-x][N-1-y]
-                mat[N-1-x][N-1-y] = mat[N-1-y][x]
-                mat[N-1-y][x] = temp
+                temp = mat[N-1-y][x] 
+                mat[N-1-y][x] = mat[N-1-x][N-1-y] 
+                mat[N-1-x][N-1-y] = mat[y][N-1-x]
+                mat[y][N-1-x] = mat[x][y]
+                mat[x][y] = temp 
+                
      
     def display(self, mat):
         N = len(mat)
@@ -30,8 +31,12 @@ class Solution:
      
 if __name__ == "__main__": 
     sol = Solution()
-    mat = [[x+y for x in range(N)] for y in range(N)]
-    sol.display(mat)
+    mat = [
+  [ 5, 1, 9,11],
+  [ 2, 4, 8,10],
+  [13, 3, 6, 7],
+  [15,14,12,16]
+]
     mat1 = mat
     sol.rotateMatrix(mat)
     sol.display(mat)
