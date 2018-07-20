@@ -10,30 +10,28 @@ import sys
 
 class Solution:
     
-    def __init__(self, A):
-        self.A = A
-    
-    def rotate(self):
-        N = len(self.A)
-        for i in range(int(N/2)):
-            for j in range(N-i-1):
-                temp = self.A[i][j]
-                self.A[i][j] = self.A[j][N-1-i]
-                self.A[j][N-1-i] = self.A[N-i-1][N-j-1]
-                self.A[N-i-1][N-j-1] = self.A[N-j-1][i]
-                self.A[N-j-1][i] = temp
-        return self.A
-                
-    def display(self, B):
-        N = len(B)
-        for i in range(N):
-            for j in range(N):
-                print (B[i][j], end=' ')
-            print("")
-                
-if __name__ == "__main__":
-    N = 5
+    def rotateMatrix(self, mat):
+        N = len(mat)
+        for x in range(0, int(N/2)):
+            for y in range(x, N-x-1):
+                temp = mat[x][y]
+                mat[x][y] = mat[y][N-1-x]
+                mat[y][N-1-x] = mat[N-1-x][N-1-y]
+                mat[N-1-x][N-1-y] = mat[N-1-y][x]
+                mat[N-1-y][x] = temp
+     
+    def display(self, mat):
+        N = len(mat)
+        for i in range(0, N):
+            for j in range(0, N):
+                print (mat[i][j], end = ' ')
+            print ("")
+     
+     
+if __name__ == "__main__": 
+    sol = Solution()
     mat = [[x+y for x in range(N)] for y in range(N)]
-    sol = Solution(mat)
-    mat = sol.rotate()
+    sol.display(mat)
+    mat1 = mat
+    sol.rotateMatrix(mat)
     sol.display(mat)
