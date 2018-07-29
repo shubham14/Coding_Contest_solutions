@@ -9,7 +9,7 @@ import numpy as np
 
 class Solution:
     def sortAnagrams(self, str_list):
-        str_list = map(lambda(x: sorted(x), str_list))
+        str_list = map(lambda x: ''.join(sorted(x)), str_list)
         ind_sort = np.argsort(list(str_list))
         ans = list(np.array(str_list)[ind_sort])
         return ans
