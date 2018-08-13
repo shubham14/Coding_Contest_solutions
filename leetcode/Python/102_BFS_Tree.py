@@ -17,13 +17,13 @@ class TreeNode:
 # tuple storing the level and the node
 class Solution:
     def levelOrder(self, root):
-        queue = []
+        stack = []
         final_print = []
         level = 1
         if root == None:
             return -1
         else:
-            queue.insert(0, (level, root))
+            stack.insert(0, (level, root))
         while stack:
             level += 1
             if root.left:
