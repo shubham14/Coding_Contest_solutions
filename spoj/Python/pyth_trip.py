@@ -21,11 +21,12 @@ class Solution:
 				elif l[start] + l[end] > l[i]:
 					end -= 1
 		i += 1
-		ans = (-1, -1, -1)
 
 		if flag == 1:
 			return True, ans
-		return False, ans		
+		else:
+			ans = (-1, -1, -1)
+			return False, ans		
 
 # main function
 if __name__ == "__main__":
