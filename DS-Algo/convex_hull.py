@@ -57,6 +57,7 @@ class Solution:
                     second = i
                 elif self.direction(points[start], points[second], points[i]) == "COLLINEAR" and i != second:
                     collinear.append(i)
+                    second = i
                     mark_col = 1
             if mark_col == 0:
                 first = second
@@ -64,16 +65,10 @@ class Solution:
             else:
                 first = collinear.pop()
                 stack.append(first)
+                stack.append(second)
                 
             # break loop if cycle has been completed
             if first == start:
                 flag = False
                 
         return len(stack)  
-
-     
-        
-            
-                
-                
-            
