@@ -29,11 +29,6 @@ class Trie:
         return TrieNode()
  
     def _charToIndex(self,ch):
-         
-        # private helper function
-        # Converts key current character into index
-        # use only 'a' through 'z' and lower case
-         
         return ord(ch)-ord('a')
  
  
@@ -56,10 +51,7 @@ class Trie:
         pCrawl.isEndOfWord = True
  
     def search(self, key):
-         
-        # Search key in the trie
-        # Returns true if key presents 
-        # in trie, else false
+
         pCrawl = self.root
         length = len(key)
         for level in range(length):
