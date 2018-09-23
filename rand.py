@@ -1,49 +1,56 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Sep 21 16:04:22 2018
+Created on Sun Sep 23 15:09:43 2018
 
 @author: Shubham
 """
 
-def addBinaryString(a, b):
-    if len(a) < len(b):
-        a, b = b, a  
-    a_rev = ''.join(reversed(a))
-    d = len(a)-len(b)
-    b_rev = ''.join(reversed(b))
-    z = ['0'] * d        
-    b_rev = b_rev + ''.join(z)
-    sum_ans = ''
-    carry = 0
-    for i in range(len(a_rev)):
-        if (a_rev[i] == '1' and b_rev[i] == '0' or (a_rev[i] == '0' and b_rev[i] == '1')) and carry == 0:
-            sum_ans += '1'
-            carry = 0
-            print(sum_ans, 1)
-        elif (a_rev[i] == '1' and b_rev[i] == '0' or (a_rev[i] == '0' and b_rev[i] == '1')) and carry == 1:
-            sum_ans += '0' 
-            carry = 1
-            print(sum_ans, 2)
-        elif a_rev[i] == '0' and b_rev[i] == '0' and carry == 0:
-            sum_ans += '0'
-            carry = 0
-            print(sum_ans, 3)
-        elif a_rev[i] == '0' and b_rev[i] == '0' and carry == 1:
-            sum_ans += '1'
-            carry = 0
-            print(sum_ans, 4)
-        elif a_rev[i] == '1' and b_rev[i] == '1' and carry == 0:
-            sum_ans += '0'
-            carry = 1
-            print(sum_ans, 5)
-        elif a_rev[i] == '1' and b_rev[i] == '1' and carry == 1:
-            sum_ans += '1'
-            carry = 1
-            print(sum_ans, 6)
-    print (i)        
-    if i == len(a_rev) - 1:
-        if carry == 1:
-            print("Here")
-            sum_ans += '1'
+# longest common substring
+import numpy as np
+import pandas as pd
+from collections import defaultdict
+
+class Solution:
+    def LCS(self, a, b):
+        m = len(a); n = len(b)
+        DP = [[0 for i in range(n+1)] for j in range(m+1)]
+        for i in range(m+1):
+            for j in range(n+1):
+                if i == 0 or j == 0:
+                    DP[i][j] = 0
+                elif a[i-1] == b[j-1]:
+                    DP[i][j] = 1 + DP[i-1][j-1]
+                else:
+                    DP[i][j] = max(DP[i-1][j], DP[i][j-1])
+        return DP[m][n]
+    
+    def maxSubArraySum(self, A):
+        curr_sum = A[0]
+        max_so_far = A[0]
+        for i in range(len(A)):
+            curr_sum= max(curr_sum, curr_sum + A[i])
+            max_so_far = max(curr_sum, max_so_far)
+        return max_so_far
+    
+    # here A is a 2D matrix
+    # where all elements are positive
+    def kadane2D(self, A):
+        col = len(A)
+        row = len(A[0])
+        maxSum = -1
+        for i in range(0, col):
+            temp = []
+            for j in range(i, col):
+                sum1 = 0
+                for z in range(row):
+                    sum1 += M[i][j]
+                
             
-    return ''.join(reversed(sum_ans)), a_rev, b_rev
+        
+    
+if __name__ == "__main__":
+    str1 = "AGGTAB"; 
+    str2 = "GXTXAYB";
+    sol = Solution()
+    ans = sol.LCS(str1, str2)
+    print (ans)
