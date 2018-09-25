@@ -45,7 +45,11 @@ class Solution:
                 for z in range(row):
                     sum1 += M[i][j]
                 
-            
+    def includeEle(self, A, sum1):
+        for i in range(len(A)):
+            if (sum1 - A[i]) >= 0:
+                sum1 = sum1 - A[i]
+                print (A[i])        
         
     
 if __name__ == "__main__":
@@ -53,4 +57,9 @@ if __name__ == "__main__":
     str2 = "GXTXAYB";
     sol = Solution()
     ans = sol.LCS(str1, str2)
-    print (ans)
+    print (ans
+           
+    A = [1, 2, 3, 5, 3]
+    sum1 = 10
+    sol = Solution()
+    sol.includeEle(A, sum1)
