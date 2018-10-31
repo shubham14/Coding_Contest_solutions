@@ -12,27 +12,15 @@ class Node:
         self.left = None
         
 class Path:
-    def rootpath(self, root, sum1, ans):
-        if root == None:
-            ans = []     
-            return ans
-        elif sum1 == 0:
-            ans.append(root.data)
-        else:
-            if root.left:
-                ans.append(root.left.data)
-                ans = (self.rootpath(root.left, sum1-root.left.data, ans))
-            if root.right:
-                ans.append(root.right.data)
-                ans = (self.rootpath(root.right, sum1-root.right.data, ans))
            
-    def printPath(self, root):
+    def printPath(self, root, s):
         path = []
-        self.printPathRec(root, path, 0)
+        a = self.printPathRec(root, s, path, 0)
+        return a
         
-    def printPathRec(self, root, path, pathlen):
+    def printPathRec(self, root, s, path, pathlen):
         if root is None:
-            return
+            return []
         
         if(len(path) > pathlen):
             path[pathlen] = root.data
@@ -41,12 +29,13 @@ class Path:
             
         pathlen += 1
         
-        if root.left is None and root.right is None:
-            for i in range(pathlen):
-                print (path[i])
+        if s == 0:
+            return path
         else:
-            self.printPathRec(root.left, path, pathlen)
-            self.printPathRec(root.right, path, pathlen)
+            if root.left:
+                self.printPathRec(root.left, s-root.left.data, path, pathlen)
+            if root.right:
+                self.printPathRec(root.right, s-root.right.data, path, pathlen)
                 
 if __name__ == "__main__":
     root = Node(1)
@@ -55,7 +44,4 @@ if __name__ == "__main__":
     root.left.left = Node(7)
     root.right = Node(9)
     p = Path()
-    a = []
-    a = p.rootpath(root, 10, a)
-    print (a)
-        
+    a = p.printPath(root, 10)
