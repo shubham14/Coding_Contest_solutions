@@ -24,12 +24,13 @@ class Solution:
             elif H[ele][0] == 0:
                 H[ele] = [1, i, i]
                 
-        for k in list(H.keys()):
-            if max_diff > H[k][2] - H[k][1]:
+        for k in H:
+            if max_diff < H[k][2] - H[k][1]:
                 max_diff = H[k][2] - H[k][1]
-        return max_diff
+                interval = (H[k][1]+1, H[k][2])
+        return max_diff, H, interval
 
 if __name__ == "__main__":
     sol = Solution()
-    a = sol.lszero([1,-2,2,-4,4])
+    a, H, interval = sol.lszero([1,-2,2,-4,4])
     print(a)
