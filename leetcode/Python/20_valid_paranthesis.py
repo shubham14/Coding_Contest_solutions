@@ -14,12 +14,12 @@ class Solution:
 					stack.insert(0, char)
 					stack.pop()
 					stack.pop()
-					print(stack[0])
+					print(stack)
 				elif top == '[' and char == ']':
 					stack.insert(0, char)
 					stack.pop()
 					stack.pop()
-					print(stack[0])
+					print(stack)
 				else:
 					stack.insert(0, char)
 			except IndexError:
