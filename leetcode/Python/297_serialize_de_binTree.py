@@ -15,8 +15,6 @@ class Codec:
 				t = queue[0]
 				queue.pop(0)
 				l.append(str(t.val))
-				if t.left is None:
-					l.append('null')
-				if t.right is None:
-					l.append('null')
+				queue.append(t.left)
+				queue.append(t.right)
 		return l
