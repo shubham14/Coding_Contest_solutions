@@ -107,35 +107,38 @@ def optimalDistance(maxTravelDist, forwardRouteDist, returnRouteDist):
         for j in range(len(returnRouteDist)):
             sum_dist = forwardRouteDist[i][1] + returnRouteDist[j][1]
             if sum_dist <= maxTravelDist:
-                if temp > sum_dist:
+                if temp < sum_dist:
                     temp = sum_dist
                     ans = []
-                    ans.append([i+1, j+1])
-                else:
+                    ans.append([i + 1, j + 1])
+                elif temp == sum_dist:
                     ans.append([i + 1, j + 1])
     return ans
-
-# assumption is that these arrays are sorted
+ 
+# O(n) solution               
 def optDist(maxTr, fRD, rRD):
     n = len(fRD)
     m = len(rRD)
     i = 0; j = m - 1; t = -1
     ans = []
-    while i < m or j >= 0:
+    while i < n or j > 0:
+        print (i , j)
         sum_d = fRD[i][1] + rRD[j][1]
         if sum_d <= maxTr and sum_d == t:
-            ans.append([i+1, j+1])
-            i += 1
-            j -= 1
+            ans.append([i + 1, j + 1])
+            i += 1 
         elif sum_d <= maxTr and sum_d > t:
+            t = sum_d
             ans = []
-            ans.append([i+1, j+1])
+            ans.append([i + 1, j + 1])
             i += 1
         elif sum_d > maxTr:
-            if i == n - 1 or j == 0:
+            if j == 0:
                 return ans
-            j -= 1
-        
+            if j > 0:
+                j -= 1
+    return ans
+            
 
 def spiralPrint(A, m, n):
     k = 0;  l = 0
@@ -158,6 +161,13 @@ def spiralPrint(A, m, n):
                 print(A[i][l], end = " ")
             l += 1
     
+
+def roundRotation(str1, str2):
+    str1_new = str1 + str1
+    if str2 in str1_new:
+        return 1
+    return -1
+
 # Driver Code 
 a = [ [1, 2, 3, 4, 5, 6], 
       [7, 8, 9, 10, 11, 12], 
@@ -166,8 +176,140 @@ a = [ [1, 2, 3, 4, 5, 6],
         
 R = 4; C = 6
 spiralPrint(a, R, C) 
-  
-# This code is contributed by Nikita Tiwari. 
+   
             
-a= 7000; b =  [[1, 3000], [2, 5000], [3, 7000], [4, 10000]] ; c =[[1, 2000], [2, 3000], [3, 4000], [4, 5000]] 
-print(optimalDistance(a,b,c))
+a= 7000; b = [[1,2000],[2,4000],[3,6000]]; c = [[1,2000]] 
+print(optDist(a,b,c))
+
+s = 'abc'; s1 = 'cab'
+print(roundRotation(s, s1))
+
+# memoized LIS implementation
+def lis(A, n):
+    L = [0]*n
+    for i in range(n-1):
+        L[i] = 1
+        for j in range(i+1, n):
+            if A[j] > A[i] and L[j] < L[i] + 1:
+                L[j] = L[i] + 1
+    
+    return max(L)
+
+class Solution:
+    def isValid(self, s):
+        if not s:
+            return True
+        mapping = {']':'[','}':'{',')':'('}
+        stack = []
+        for i in s:
+            if i in ['(','{','[']:
+                stack.append(i)
+            elif i in mapping:
+                if mapping[i] == stack[-1]:
+                    stack.pop()
+                else:
+                    stack.append(i)
+        return len(stack) == 0
+    
+
+    
+def heapify(A, n, i):
+    largest = i
+    r = 2 * i + 2
+    l = 2 * i + 1
+    if l < n and A[l] > A[largest]:
+        largest = l
+    if r < n and A[r] > A[largest]:
+        largest = r
+    if largest != i:
+        A[i], A[largest] = A[largest], A[i]
+        heapify(A, n, largest)
+
+def heapsort(A):
+    n = len(A)
+    for i in range(n, -1, -1):
+        heapify(A, n, i)
+    
+    for i in range(n-1, -1, -1):
+        A[i], A[0] = A[0], A[i]
+        heapify(A, i, 0) 
+        
+def buildmaxHeap(A, n):
+    for i in range(len(A)//2, -1, -1):
+        heapify(A, n, i)
+        
+def reverseStr(string):
+    string = list(string)
+    i = 0
+    n = len(string)
+    j = n -1
+    while i <= j:
+        string[i], string[j] = string[j], string[i]
+        i += 1
+        j -= 1
+    return ''.join(string)
+
+# remove duplicates from an Array
+def removeDuplicates(A):
+    hashMap = {}
+    for i, ele in enumerate(A):
+        if hashMap.get(ele, 0) < 1:
+            hashMap[ele] = 1
+        else:
+            A.pop(i)
+    return A
+    
+def partition(A, st, end):
+    i = st - 1
+    x = A[end]
+    for j in range(st, end):
+        if A[j]  <= x:
+            i += 1
+            A[i], A[j] = A[j], A[i]
+    A[i+1], A[end] = A[end], A[i+1]
+    return i+1
+
+def quicksort(A, st, end):
+    if st <= end:
+        p = partition(A, st, end)
+        quicksort(A, st, p-1)
+        quicksort(A, p+1, end)
+
+# most frequent for one element
+def mostFreq(A):
+    n = len(A)
+    st = 0; end = n-1
+    quicksort(A, st, end)
+    freq = {}
+    ele = -1; maxcount = -1; c= 0
+    for i in range(1, len(A)):
+        if A[i] == A[i - 1]:
+            c += 1
+            if maxcount < c:
+                maxcount = c
+                ele = A[i]
+                freq[ele] = c
+        else:
+            c = 0
+    return ele, maxcount+1
+
+# frequency dictionary
+def Freqdict(A):
+    n = len(A)
+    st = 0; end = n-1
+    quicksort(A, st, end)
+    freq = {}
+    c= 1
+    for i in range(0, len(A)):
+        if A[i] == A[i - 1]:
+            c += 1
+            ele = A[i]
+            freq[ele] = c
+        else:
+            c = 1
+            ele = A[i]
+            freq[ele] = c
+    return freq
+        
+sol = Solution()
+print (sol.isValid('{[(())()]}'))
