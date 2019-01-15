@@ -9,7 +9,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-img = cv2.imread('coin2.jpg')
+img = cv2.imread('coin1.jpg')
 
 def detectCoin(img):
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -20,7 +20,7 @@ def detectCoin(img):
     rows = gray_img.shape[0]
     circles = cv2.HoughCircles(gray_img, 3, 1,
                                rows/8,param1=100, param2=30,
-                                   minRadius=10, maxRadius=30)
+                                   minRadius=20, maxRadius=50)
     
     if circles is not None:
         circles = np.uint16(np.around(circles))
@@ -33,6 +33,7 @@ def detectCoin(img):
             cv2.circle(img, center, radius, (255, 0, 255), 3)
             
     plt.imshow(img)
+    return circles
     
 def segmentObject(img):
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -45,10 +46,10 @@ def segmentObject(img):
     sure_fg = np.uint8(sure_fg)
     unknown = cv2.subtract(sure_bg, sure_fg)
     ret, markers = cv2.connectedComponents(sure_fg)
-#    markers = markers + 1
-#    markers[unknown==255] = 0
-#    markers = cv2.watershed(img, markers)
-#    img[markers==-1] = [255, 0, 0]
+    markers = markers + 1
+    markers[unknown==255] = 0
+    markers = cv2.watershed(img, markers)
+    img[markers==-1] = [255, 0, 0]
     plt.imshow(markers)    
     
 def segmentObject2(img):
@@ -110,3 +111,55 @@ def segmentObject3(img):
     x,y,w,h = cv2.boundingRect(c)
     cv2.rectangle(diff,(x,y),(x+w,y+h),(125,125,125),2)
     plt.imshow(img)
+    
+def segmentObject4(img):
+    kernel = np.ones((3, 3), np.uint8)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(gray, 127, 255, 
+                                cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+    closing = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE,
+                               kernel, iterations=5)
+    bg = cv2.dilate(closing, kernel, iterations=7)
+    # Finding foreground area 
+    dist_transform = cv2.distanceTransform(closing, cv2.DIST_L2, 0) 
+    ret, fg = cv2.threshold(dist_transform, 0.01 * dist_transform.max(), 255, 0)
+    plt.imshow(fg)
+    return fg
+
+
+# img and template to be input in gray mode
+def template_matching(img, template):
+    img2 = img.copy()
+    w, h = template.shape[::-1]
+    
+    # All the 6 methods for comparison in a list
+    methods = ['cv2.TM_CCOEFF', 'cv2.TM_CCOEFF_NORMED', 'cv2.TM_CCORR',
+                'cv2.TM_CCORR_NORMED', 'cv2.TM_SQDIFF', 'cv2.TM_SQDIFF_NORMED']
+    
+    for meth in methods:
+        img = img2.copy()
+        method = eval(meth)
+    
+        # Apply template Matching
+        res = cv2.matchTemplate(img,template,method)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    
+        # If the method is TM_SQDIFF or TM_SQDIFF_NORMED, take minimum
+        if method in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
+            top_left = min_loc
+        else:
+            top_left = max_loc
+        bottom_right = (top_left[0] + w, top_left[1] + h)
+    
+        cv2.rectangle(img,top_left, bottom_right, 255, 2)
+    
+        plt.subplot(121),plt.imshow(res,cmap = 'gray')
+        plt.title('Matching Result'), plt.xticks([]), plt.yticks([])
+        plt.subplot(122),plt.imshow(img,cmap = 'gray')
+        plt.title('Detected Point'), plt.xticks([]), plt.yticks([])
+        plt.suptitle(meth)
+    
+        plt.show()
+        
+        
+fg=segmentObject4(img)

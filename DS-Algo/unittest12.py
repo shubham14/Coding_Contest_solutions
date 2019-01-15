@@ -7,6 +7,7 @@ Created on Tue Jan  8 16:34:25 2019
 
 import unittest
 import sys
+import os
 
 def fun(x):
     return x + 1
@@ -29,7 +30,14 @@ def quicksort(A, low, high):
         quicksort(A, pi+1, high)
     return A
 
-class MyTest(unittest.TestCase):
+
+class CustomAssertions:
+    def assertFileExists(self, path):
+        if not os.path.lexists(path):
+            raise AssertionError('File not exists in path "' + path + '".')
+
+class MyTest(unittest.TestCase, CustomAssertions):
+        
     def test(self):
         self.assertEqual(fun(3), 4)
     
@@ -40,7 +48,32 @@ class MyTest(unittest.TestCase):
     def test_isupper(self):
         self.assertTrue('FOO'.isupper())
         self.assertFalse('Foo'.isupper())
+    
+    def test_split(self):
+        s = 'hello world'
+        self.assertEqual(s.split(), ['hello', 'world'])
+        with self.assertRaises(TypeError):
+            s.split(2)
+
+
+def suite():
+    tests = ['test_default_size', 'test_resize']
+    return unittest.TestSuite(map(MyTest, tests))
+
+def suite1():
+    suite = unittest.TestSuite()
+    suite.addTest(MyTest('test1'))
+    suite.addTest(MyTest('test_upper'))
+    return suite
         
 if __name__ == "__main__":
-    MyTest.A = [1,7,2,6,9,4]
-    unittest.main()
+#    MyTest.A = [1,2,3,4,32,2,2,3,4,5,8,4,0]
+#    unittest.main()
+   
+#    suite3 = unittest.TestLoader().loadTestsFromTestCase(MyTest)
+
+    widgetTestSuite = unittest.TestSuite()
+    widgetTestSuite.addTest(MyTest('test_split'))
+    runner = unittest.TextTestResult()
+    runner.run(widgetTestSuite())
+    

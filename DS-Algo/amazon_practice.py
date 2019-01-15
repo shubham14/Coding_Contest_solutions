@@ -293,6 +293,23 @@ def mostFreq(A):
             c = 0
     return ele, maxcount+1
 
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.right = None
+        self.left = None
+        
+# all permutations of the string
+def permute(a, l, r):
+    if l == r:
+        print (''.join(a))
+    else:
+        for i in range(l, r + 1):
+            a[i], a[l] = a[l], a[i]
+            permute(a, l+1, r)
+            a[l], a[i] = a[i], a[l] # backtracking method
+            
+
 # frequency dictionary
 def Freqdict(A):
     n = len(A)
