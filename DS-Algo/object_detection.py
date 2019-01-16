@@ -40,3 +40,14 @@ def pyramid(img, scale=1.5, min_size=(30, 30)):
         # yield the next image in the pyramid
         yield img
         
+def sliding_window(img, window_size, step_size=8):
+    for y in range(0, img.shape[0], step_size):
+        for x in range(0, img.shape[1], step_size):
+            window = img[x: x + window_size[1], y: y + window_size[0]]
+            if not (window.shape[0] != window_size[1] or window.shape[1] != window_size[0]):
+                yield (x, y, window) 
+                
+def hogDes(img):
+    hog = cv2.HOGDescriptor()
+    h = hog.compute(img)
+    return h

@@ -112,6 +112,7 @@ def segmentObject3(img):
     cv2.rectangle(diff,(x,y),(x+w,y+h),(125,125,125),2)
     plt.imshow(img)
     
+# watershed algorithm for segmentation
 def segmentObject4(img):
     kernel = np.ones((3, 3), np.uint8)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

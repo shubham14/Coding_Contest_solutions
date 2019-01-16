@@ -33,6 +33,28 @@ def interleavingStrings(str1, str2, str3):
                     DP[i][j] == DP[i-1][j] or DP[i][j-1]
     return DP[m][n]
 
+class Solution1:
+    def AmazonAircraft(self, forward, ret, maxValue):
+        n = len(forward)
+        m = len(ret)
+        i = 0; j = m-1; ans = []
+        temp = -1
+        while i < n and j >= 0:
+            print (i , j)
+            sumVal = forward[i][1] + ret[j][1]
+            if temp < sumVal and sumVal <= maxValue:
+                ans = []
+                temp = sumVal
+                ans.append([i+1, j+1])
+                i += 1
+            elif temp == sumVal and sumVal <= maxValue:
+                ans.append([i+1, j+1])
+                i += 1
+            elif sumVal > maxValue:
+                j -= 1
+        return ans
+                
+
 class Solution:
     def binarySearch(self, A, l, r, x):
         if l > r:
