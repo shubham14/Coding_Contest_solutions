@@ -17,14 +17,16 @@ class CLL:
         self.head = None
     
     def push(self, new_data):
+        curr = self.head
+        temp = Node(new_data)
         if self.head is None:
             temp = Node(new_data)
             temp.next = temp
+            print (new_data)
             self.head = temp
         
-        curr = self.head
-        temp = Node(new_data)
-        if curr.data >= new_data:
+        elif curr.data >= new_data:
+            print(new_data)
             while curr.next != self.head:
                 curr = curr.next
             curr.next = temp
@@ -33,20 +35,21 @@ class CLL:
         
         else:
             temp = Node(new_data)
-            while(curr.next != self.head and curr.data <= new_data):
+            print(new_data)
+            while(curr.next != self.head and curr.next.data <= new_data):
                 curr = curr.next
             temp.next = curr.next
             curr.next = temp
     
     def printList(self):
         temp = self.head
-        print(temp.data)
-        temp = temp.next
-        while (temp!=self.head):
+        while (temp.next!=self.head):
             print(temp.data)
             temp = temp.next
-        
-arr = [12, 56, 2, 11, 1, 90] 
+        print(temp.data)
+
+
+arr = [14, 56, 2, 11, 100, 90] 
   
 list_size = len(arr) 
   

@@ -5,13 +5,18 @@ Created on Sat Jan 12 17:10:32 2019
 @author: Shubham
 """
 
+class Node:
+    def __init__(self, x):
+        self.data = x
+        self.next = None
+
 def interleavingStrings(str1, str2, str3):
     '''
     str1 and str2 are the input strings
     str3 is the resultant strings
     '''
     m = len(str1); n = len(str2)
-    DP = [[0 * len(n) + 1] * len(m) + 1]
+    DP = [[0] * len(n) + 1] * len(m) + 1
     
     if m + n != len(str3):
         return False
@@ -107,3 +112,235 @@ class Solution:
         sorted_by_value = sorted(d.items(), key=lambda kv: kv[1])
         k = sorted_by_value.keys()[:K]
         return k
+    
+class CLL:
+    def __init__(self):
+        self.head = None
+    
+    def push(self, new_data):
+        curr = self.head
+        temp = Node(new_data)
+        if self.head is None:
+            temp = Node(new_data)
+            temp.next = temp
+            self.head = temp
+        
+        elif curr.data >= new_data:
+            while curr.next != self.head:
+                curr = curr.next
+            curr.next = temp
+            temp.next = self.head
+            self.head = temp
+        
+        else:
+            temp = Node(new_data)
+            while(curr.next != self.head and curr.next.data <= new_data):
+                curr = curr.next
+            temp.next = curr.next
+            curr.next = temp
+    
+    def printList(self):
+        temp = self.head
+        while (temp.next!=self.head):
+            print(temp.data)
+            temp = temp.next
+        print(temp.data)
+
+def twoSum(A, sum):
+    s = set()
+    for ele in A:
+        temp = sum - ele
+        if temp in s:
+            return True
+        s.add(ele)
+    return False
+
+def threeSum(arr):
+    for i in range(len(arr)):
+        t = -arr[i]
+        s = set()
+        for j in range(i+1, len(arr)):
+            temp = t - arr[j]
+            if temp in s:
+                return True
+            else:
+                s.add(arr[j])
+    return False
+            
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.right = None
+        self.left = None
+
+def preorderStack(root):
+    if root is None:
+        return 
+    else:
+        stack = []
+        stack.append(root)
+        while stack:
+            top = stack[0]
+            stack.pop(0)
+            if top.left:
+                stack.append(top.left)
+            print(top.val)
+            if top.right:
+                stack.append(top.right)
+
+def preorder(root):
+    if root:
+        print(root.val)
+        preorder(root.left)
+        preorder(root.right)
+
+def permute(a, l, r):
+    a = list(a)
+    if l == r:
+        print (''.join(a))
+    for i in range(l, r+1):
+        a[l], a[i] = a[i], a[l]
+        permute(a, l+1, r)
+        a[l], a[i] = a[i], a[l]
+
+def revLL(head):
+    prev = None
+    curr = head
+    while curr:
+        next = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next
+    head = prev
+    return head
+
+def reverseSecondHalf(head):
+    slow = head
+    temp = head
+    fast = head
+    while fast.next is not None:
+        fast = fast.next.next
+        slow = slow.next
+        slow = temp.next
+    temp.next = revLL(slow)
+    return head
+    
+def levelOrderTraversal(root):
+    if root is None:
+        return []
+    queue = []
+    ans = []
+    queue.append(root)
+    while queue:
+        n = len(queue)
+        for i in range(n):
+            t = queue[0]
+            queue.pop(0)
+            ans.append(t.val)
+            if t.left is not None:
+                queue.append(t.left)
+            if t.right is not None:
+                queue.append(t.right)
+    return ans
+
+def AmazonFresh(numDest, alloc, numDeli):
+    dist = list(map(lambda x: x[0]**2 + x[1]**2, alloc))
+    z = dict(zip(dist, alloc))
+    z1 = dict(sorted(z.items(), key=lambda kv: kv[0]))
+    return list(z1.values())[:numDeli]
+
+def numberTri(arr):
+    n = len(arr)
+    arr.sort()
+    count = 0
+    for i in range(0, n-2):
+        k = i+2
+        for j in range(i+1, n):
+            while k < n and arr[i] + arr[j] > arr[k]:
+                k += 1
+            if k > j:
+                count += k - j - 1
+    return count
+
+def formSumMatrix(A):
+    n = len(A); m = len(A[0])
+    dp = [[0] * m] * n
+    for i in range(n):
+        for j in range(m):
+            if i == 0 and j == 0:
+                dp[i][j] = A[i][j]
+            elif i == 0 and j != 0:
+                dp[i][j] = A[i][j] + dp[i][j-1]
+            elif i !=0 and j == 0:
+                dp[i][j] = A[i][j] + dp[i-1][j]
+            elif i != 0 and j != 0:
+                dp[i][j] = A[i][j] + dp[i-1][j] + dp[i][j-1] - dp[i-1][j-1]
+    return dp
+
+def sumMat(A):
+    n = len(A); m = len(A[0])
+    dp = [[0] * m] * n
+    dp[0][0] = A[0][0]
+    for i in range(1, len(A)):
+        dp[i][0] = A[i][0] + dp[i-1][0]
+    for i in range(1, len(A[0])):
+        dp[0][i] = A[0][i] + dp[0][i-1]
+    for i in range(1, n):
+        for j in range(1, m):
+            dp[i][j] = A[i][j] + dp[i-1][j] + dp[i][j-1] - dp[i-1][j-1]
+    return dp
+        
+def revSpeChar(str1):
+    str1 = list(str1)
+    n = len(str1)
+    i = 0; j = n - 1
+    while i <= j:
+        if not str1[i].isalpha():
+            i += 1
+        elif not str1[j].isalpha():
+            j -= 1
+        else:
+            str1[i], str1[j] = str1[j], str1[i]
+            i += 1
+            j -= 1
+    return ''.join(str1)
+
+def push(head, new_data):
+    new_node = Node(new_data)
+    new_node.next = head
+    head = new_node
+    return head
+
+def reverseUtil(head, curr, prev):
+    if curr.next is None:
+        head = curr
+        curr.next = prev
+        return head
+    next = curr.next
+    curr.next = prev
+    head = reverseUtil(head, next, curr)
+    return head
+
+def reverse(head):
+    if head is None:
+        return None
+    head = reverseUtil(head, head, None)
+    return head
+
+def printList(head):
+    temp = head
+    while(temp):
+        print (temp.data)
+        temp = temp.next
+        
+head = Node(1)
+head = push(head, 2)
+head = push(head, 5)
+head = push(head, 3)
+
+print ('--- Original List ---')
+printList(head)
+
+print ('--- Reversed List ---')
+h = reverse(head)
+printList(h)
