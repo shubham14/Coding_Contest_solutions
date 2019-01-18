@@ -58,7 +58,27 @@ class Solution1:
             elif sumVal > maxValue:
                 j -= 1
         return ans
-                
+        
+
+def closestsum(forward, rev, target):
+    n = len(forward)
+    m = len(rev)
+    i = 0; j = m - 1
+    ans = []
+    temp = 10000000
+    while i < n and j >=0:
+        sumPair = forward[i] + rev[j]
+        if temp > abs(sumPair-target):
+            ans = []
+            temp = abs(sumPair-target)
+            ans.append([i + 1, j + 1])
+            i += 1
+        elif temp == abs(sumPair-target):
+            ans.append([i + 1, j + 1])
+            i += 1
+        else:
+            j -= 1
+    return ans
 
 class Solution:
     def binarySearch(self, A, l, r, x):
@@ -206,11 +226,11 @@ def permute(a, l, r):
 def revLL(head):
     prev = None
     curr = head
-    while curr:
-        next = curr.next
+    while curr is not None:
+        next1 = curr.next
         curr.next = prev
         prev = curr
-        curr = next
+        curr = next1
     head = prev
     return head
 
@@ -218,11 +238,11 @@ def reverseSecondHalf(head):
     slow = head
     temp = head
     fast = head
-    while fast.next is not None:
+    while fast.next is not None and slow.next is not None:
         fast = fast.next.next
         slow = slow.next
         slow = temp.next
-    temp.next = revLL(slow)
+    temp.next = reverse(slow)
     return head
     
 def levelOrderTraversal(root):
@@ -344,3 +364,32 @@ printList(head)
 print ('--- Reversed List ---')
 h = reverse(head)
 printList(h)
+
+def completeNode(root):
+    if root.left is None and root.right is None:
+        return True
+    if root.left is not None and root.right is not None:
+        return True
+    return False
+
+def widthOfBinaryTree(root):
+    if root is None:
+        return 0
+    queue = []
+    queue.append(root)
+    while queue:
+        count_comp = 0; count_incomp = 0
+        n = len(queue)
+        for i in range(n):
+            front = queue[0]
+            queue.pop(0)
+            if completeNode(front):
+                count_comp += 1
+            if not completeNode(front):
+                count_incomp += 1
+            if front.left is not None:
+                queue.append(front.left)
+            if front.right is not None:
+                queue.front(front.right)
+    
+    return 2 * (count_comp + count_incomp)       
