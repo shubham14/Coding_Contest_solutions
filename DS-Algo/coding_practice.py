@@ -392,4 +392,50 @@ def widthOfBinaryTree(root):
             if front.right is not None:
                 queue.front(front.right)
     
-    return 2 * (count_comp + count_incomp)       
+    return 2 * (count_comp + count_incomp)
+
+def findNumberOfLIS(nums):
+    N = len(nums)
+    if N <= 1:
+        return N
+    lengths = [0] * N
+    counts = [1] * N
+    for j, num in enumerate(nums):
+        for i in range(j):
+            if nums[i] < nums[j]:
+                if lengths[i] >= lengths[j]:
+                    lengths[j] = 1 + lengths[i]
+                    counts[j] = counts[i]
+                elif lengths[i] + 1 == lengths[j]:
+                    counts[j] += counts[i]
+    longest = max(lengths)
+    return sum(c for i, c in enumerate(counts) if lengths[i] == longest)
+
+def findAnagrams(s, p):
+    if len(s) < len(p):
+        return []
+    dic1 = [0] * 26
+    dic2 = [0] * 26
+    res = []
+    for i in range(len(p)):
+        dic1[ord(s[i]) - ord('a')] += 1
+        dic2[ord(p[i]) - ord('a')] += 1
+    if dic1 == dic2:
+        res.append(0)
+    for i in range(1, len(s) - len(p) + 1):
+        dic1[ord(s[i-1]) - ord('a')] -= 1
+        dic1[ord(s[i+len(p)-1]) - ord('a')] += 1
+        if dic1 == dic2:
+            res.append(i)
+    return res    
+
+def rotateMat(mat):
+    N = len(mat)
+    for i in range(N//2):
+        for j in range(i, N-i-1):
+            temp = mat[i][j] 
+            mat[i][j] = mat[j][N-1-i]
+            mat[j][N-1-i] = mat[N-1-i][N-1-j]
+            mat[N-1-j][N-1-j] = mat[N-1-j][i]
+            mat[N-1-j][i] = temp
+    return mat
