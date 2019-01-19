@@ -64,7 +64,7 @@ def reverseBetween(head, m, n):
         con.next = prev
     else:
         head = prev
-        tail.next = cur
+    tail.next = cur
     return head
 
 def reverseSecondHalf(head):
@@ -82,11 +82,13 @@ head = Node(1)
 head = push(head, 2)
 head = push(head, 5)
 head = push(head, 3)
+head = push(head, 7)
+head = push(head, 9)
 
 print ('--- Original List ---')
 printList(head)
 #
 print ('--- Reversed List ---')
-h = reverseBetween(head, 2, 3)
+h = reverseBetween(head, 1, 4)
 printList(h)
 
