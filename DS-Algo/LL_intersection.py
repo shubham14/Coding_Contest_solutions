@@ -23,17 +23,14 @@ def getIntersection(head1, head2):
     temp1 = head1; temp2 = head2
     if d1 > d2:
         i = 0
-       
         while i < d1 - d2:
             temp1 = temp1.next
             i += 1
-
     elif d2 > d1:
         i = 0
         while i < d2 - d1:
             temp2 = temp2.next
             i += 1
-    
     while temp1.next is not None and temp2.next is not None:
         if temp1.val == temp2.val:
             return temp1.val
@@ -66,4 +63,6 @@ if __name__ == "__main__":
     print ('--- Original List 1 ---')
     printList(head1)
 
-    print(getIntersection(head, head1))
+    # print(getIntersection(head, head1))
+    print("----Length of the list----")
+    print (getCount(head1))

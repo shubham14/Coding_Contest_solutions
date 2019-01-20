@@ -1,3 +1,5 @@
+import sys
+
 class Node:
     def __init__(self, x):
         self.data = x
@@ -62,6 +64,51 @@ class Solution:
         head1 = self.reverseBetween(head, c+1, 2*c)
         return head1
 
+def club_anagrams(strings):
+    d = dict()
+    for st in strings:
+        st1 = ''.join(sorted(st))
+        if st1 not in d:
+            d[st1] = [st]
+        else:
+            d[st1].append(st)
+    return d
+
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = [[0 for column in range(vertices)]  
+                    for row in range(vertices)] 
+
+        def printMST(self, parent):
+            print("Edge \tWeight")
+            for i in range(1, self.V):
+                print (parent[i],"-",i,"\t",self.graph[i][parent[i]])
+
+        def minKey(self, key, mstSet):
+            min = sys.maxint
+            for v in range(self.V):
+                if key[v] < min and mstSet[v] == False:
+                    min = key[v]
+                    min_index = v
+            return min_index
+
+        def primMST(self):
+            key = [self.maxint] * self.V
+            parent = [None] * self.V
+            key[0] = 0
+            mstSet = [False] * self.V
+            parent[0] = -1
+            for c in range(self.V):
+                u = self.minKey(key, mstSet)
+                mstSet[u] = True
+                for v in range(self.V):
+                    if self.graph[u][v] > 0 and mstSet[u] == False and key[v] > self.graph[u][v]:
+                        key[v] = self.graph[u][v]
+                        parent[v] = u
+
+
+
 if __name__ == "__main__":    
     sol = Solution()
     head = Node(1)
@@ -78,3 +125,6 @@ if __name__ == "__main__":
     h = sol.reverseSecondHalf(head)
     sol.printList(h)
 
+    strings = ["cat", "tac", "pot", "top", "meow", "act"]
+    d = club_anagrams(strings)
+    print (d)

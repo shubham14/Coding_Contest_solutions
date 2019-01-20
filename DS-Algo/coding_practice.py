@@ -429,6 +429,13 @@ def findAnagrams(s, p):
             res.append(i)
     return res    
 
+def overlappingRectangles(point1, point2):
+    area1 = abs(point1[0] - point1[2]) * abs(point1[1] - point1[3])
+    area2 = abs(point2[0] - point2[2]) * abs(point2[1] - point2[3])
+    areaIntersection = (min(point1[2], point2[2] - max(point1[0], point1[0])) *
+                        min(point1[3], point2[3] - max(point1[1], point1[1])))
+    return areaIntersection
+
 def rotateMat(mat):
     N = len(mat)
     for i in range(N//2):
@@ -439,3 +446,6 @@ def rotateMat(mat):
             mat[N-1-j][N-1-j] = mat[N-1-j][i]
             mat[N-1-j][i] = temp
     return mat
+
+p = overlappingRectangles([1, 1, 4, 7], [13, 12, 45, 45])
+print(p)

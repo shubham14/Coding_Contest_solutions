@@ -201,7 +201,8 @@ def lis(A, n):
 class Solution:
     def isValid(self, s):
         if not s:
-            return True
+            return True, 0
+        c = 0
         mapping = {']':'[','}':'{',')':'('}
         stack = []
         for i in s:
@@ -210,10 +211,14 @@ class Solution:
             elif i in mapping:
                 if mapping[i] == stack[-1]:
                     stack.pop()
+                    c += 1
                 else:
                     stack.append(i)
-        return len(stack) == 0
-    
+        return len(stack) == 0, c
+
+# # point1 and point2 are quartets of points    
+# def overlapRectangleArea(point1, point2):
+
 
     
 def heapify(A, n, i):
