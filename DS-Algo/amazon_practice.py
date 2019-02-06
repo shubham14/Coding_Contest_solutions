@@ -338,3 +338,100 @@ def Freqdict(A):
         
 sol = Solution()
 print (sol.isValid('{[(())()]}'))
+
+def waysToDecode(string):
+    n = len(string)
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    dp[1] = 1
+    for i in range(2, n+1):
+        if ord(chr(int(string[i-2] + string[i-1]) + 65)) in range(65, 91):
+            dp[i] = dp[i-1] + dp[i-2]
+        else:
+            dp[i] = dp[i-1]
+    return dp[n]
+
+def reorderList(head):
+    h= head
+    slow = head
+    fast = head
+    while slow and fast and fast.next:
+        prev = slow
+        slow = slow.next
+        fast = fast.next.next
+    prev.next = None
+    return h, slow
+
+def reverseList(head):
+    curr = head
+    prev = None
+    while curr:
+        next = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next
+    head = prev
+    return head
+
+def printList(head):
+    temp = head
+    while (temp.next != None):
+        print(temp.data)
+        temp = temp.next
+    print(temp.data)
+    if temp.next is None:
+        print ("None")
+
+def combineReorder(head, head1):
+#    c = head
+#    c1 = head1
+#    while c:
+#        print(c.data)
+#        c1.next = c.next
+#        c.next = c1
+#        c = c.next.next
+#        c1 = c1.next
+#    c.next = c1
+#    return head
+    head.next = head1
+    return head
+
+def push(head, new_data):
+    new_node = Node(new_data)
+    new_node.next = head
+    head = new_node
+    return head
+
+head = Node(1)
+head = push(head, 2)
+head = push(head, 5)
+head = push(head, 3)
+head = push(head, 6)
+head = push(head, 7)
+head = push(head, 6)
+
+h, h2 = reorderList(head)
+h3 = reverseList(h2)
+printList(head)
+print("--------------------")
+printList(h3)
+
+print("--------------------")
+l = combineReorder(head, h3)
+printList(l)
+        
+def binaryTreeTraversal(root):
+    queue = []
+    ans = []
+    if root is None:
+        return []
+    queue.append(root)
+    while queue:
+        n = len(queue)
+        for i in range(n):
+            front = queue.pop(0)
+            ans.append(front.val)
+        if front.left:
+            queue.append(front.left)
+        if front.right:
+            queue.append(front.right)

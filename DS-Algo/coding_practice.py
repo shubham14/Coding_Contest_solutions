@@ -5,6 +5,11 @@ Created on Sat Jan 12 17:10:32 2019
 @author: Shubham
 """
 
+import torch 
+import torch.nn as nn
+import torchvision
+import torchvision.transforms as transforms
+
 class Node:
     def __init__(self, x):
         self.data = x
@@ -449,3 +454,36 @@ def rotateMat(mat):
 
 p = overlappingRectangles([1, 1, 4, 7], [13, 12, 45, 45])
 print(p)
+
+def solution(p1, p2):
+    dic1 = dict()
+    dic2 = dict()
+    for ele in p1:
+        dic1[ele[0]] = ele[1]
+        
+    for ele in p2:
+        if ele[0] in dic1:
+            dic1[ele[0]] = ele[1]
+
+        else:
+            dic2[ele[0]] = ele[1]
+    v = list(dic1.values()) + list(dic2.values())
+    return v
+    
+def solution1(sources):
+    n = len(sources)
+    l = [dict()] * n
+    v = []
+    for i in range(len(sources)):
+        for ele in sources[i]:
+            ele = ele.split(':')
+            l[i][ele[0]] = ele[1]
+        
+        if i > 0:            
+            for ele in sources[i]:
+                ele=  ele.split(':')
+                if ele[0] in l[0]:
+                    l[0][ele[0]] = ele[1]
+                else:
+                    l[i][ele[0]] = ele[1]
+    return list(l[0].values())
