@@ -16,7 +16,7 @@ class Solution:
     def convertLL(self, head):
         if head is None:
             return None
-        temp = head1 = head
+        temp = head
         while temp.next is not None:
             temp = temp.next
         temp.next = head
@@ -50,6 +50,45 @@ class Solution:
             print(temp.val)
             temp = temp.next
         print(temp.val)
+        
+        
+def evalString(A, B, op):
+    if op == '+':
+        return int(ord(A) - ord('0')) + int(ord(B) - ord('0'))
+    elif op == '-':
+        return int(ord(A) - ord('0')) - int(ord(B) - ord('0'))
+    elif op == '*':
+        return int(ord(A) - ord('0')) * int(ord(B) - ord('0'))
+    else:
+        return int(ord(A) - ord('0')) / int(ord(B) - ord('0'))
+        
+def evaluateExpression(string):
+    operator_stack = []
+    operand_stack = []
+    priority = {'+':2, '-':1, '*':3, '/':4}
+    for i, c in enumerate(string):
+        if c in ['+', '-', '*', '/']:
+            if len(operand_stack) > 1 and len(operator_stack) >= 1:
+                if priority[c] >= priority[operator_stack[-1]] and i < len(string)-1:
+                    operator_stack.append(c)
+                elif priority[c] > priority[operator_stack[-1]] and i == len(string)-1:
+                    A = operand_stack.pop()
+                    B = operand_stack.pop()
+                    C = operator_stack.pop()
+                    res = str(evalString(A, B, C))
+                    operand_stack.append(res)
+                elif priority[c] < priority[operator_stack[-1]] and i < len(string)-1:
+                    A = operand_stack.pop()
+                    B = operand_stack.pop()
+                    C = operator_stack.pop()
+                    res = str(evalString(A, B, C))
+                    operand_stack.append(res)
+                    operator_stack.append(res)       
+        elif c not in ['+', '-', '*', '/']:
+            operand_stack.append(c)
+            
+    return operand_stack
+                
         
 if __name__ == "__main__":
     head = ListNode(3)
