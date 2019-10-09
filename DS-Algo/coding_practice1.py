@@ -225,16 +225,12 @@ llist.next.next.next.next = llist
 
 x, boo = cycleLinkedList(llist)
 
-print(x, boo.data)
-
-import sys
-
 def buySellStocks(prices):
     minPrice = 100000
     maxProfit = -1
     for i in range(len(prices)):
         if prices[i] < minPrice:
              minPrice = prices[i]
-        else if prices[i] - minPrice > maxProfit:
+        elif prices[i] - minPrice > maxProfit:
             maxProfit = prices[i] - minPrice
     return maxProfit

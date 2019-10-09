@@ -22,7 +22,6 @@ class CLL:
         if self.head is None:
             temp = Node(new_data)
             temp.next = temp
-            print (new_data)
             self.head = temp
         
         elif curr.data >= new_data:
@@ -47,21 +46,6 @@ class CLL:
             print(temp.data)
             temp = temp.next
         print(temp.data)
-
-
-arr = [14, 56, 2, 11, 100, 90] 
-  
-list_size = len(arr) 
-  
-# start with empty linked list 
-start = CLL() 
-  
-# Create linked list from the array arr[] 
-# Created linked list will be 1->2->11->12->56->90 
-for i in range(list_size): 
-    start.push(arr[i]) 
-  
-start.printList() 
 
 def twoSum(arr, sum):
     s = set()
@@ -125,7 +109,6 @@ def optDist(maxTr, fRD, rRD):
     i = 0; j = m - 1; t = -1
     ans = []
     while i < n or j > 0:
-        print (i , j)
         sum_d = fRD[i][1] + rRD[j][1]
         if sum_d <= maxTr and sum_d == t:
             ans.append([i + 1, j + 1])
@@ -170,22 +153,6 @@ def roundRotation(str1, str2):
     if str2 in str1_new:
         return 1
     return -1
-
-# Driver Code 
-a = [ [1, 2, 3, 4, 5, 6], 
-      [7, 8, 9, 10, 11, 12], 
-      [13, 14, 15, 16, 17, 18],
-      [13, 14, 15, 16, 17, 18],] 
-        
-R = 4; C = 6
-spiralPrint(a, R, C) 
-   
-            
-a= 7000; b = [[1,2000],[2,4000],[3,6000]]; c = [[1,2000]] 
-print(optDist(a,b,c))
-
-s = 'abc'; s1 = 'cab'
-print(roundRotation(s, s1))
 
 # memoized LIS implementation
 def lis(A, n):
@@ -336,9 +303,6 @@ def Freqdict(A):
             freq[ele] = c
     return freq
         
-sol = Solution()
-print (sol.isValid('{[(())()]}'))
-
 def waysToDecode(string):
     n = len(string)
     dp = [0] * (n + 1)
@@ -402,6 +366,55 @@ def push(head, new_data):
     head = new_node
     return head
 
+
+def reverseSecondHalf(head):
+    head1 = head
+    if head is None:
+        return None
+    slow = fast = head1
+    c = 0
+    
+    while slow.next and fast and fast.next:
+        new_prev = slow
+        slow = slow.next
+        fast = fast.next.next
+        c += 1
+    curr, prev = slow, None
+    tail, con = curr, new_prev
+    while c+1:
+        next = curr.next
+        curr.next = new_prev
+        new_prev = curr
+        curr = next
+        c -= 1
+    
+    head1 = new_prev
+    tail.next = curr
+    return head1
+
+
+def reverseLL(head):
+    curr = head
+    prev = None
+    while curr:
+        next1 = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next1
+    head = prev
+    return head
+
+#def reverseSecondHalf(head):
+#    slow = head
+#    temp = head
+#    fast = head
+#    while fast.next is not None and slow.next is not None:
+#        temp = slow
+#        fast = fast.next.next
+#        slow = slow.next
+#    temp.next = reverseLL(slow)
+#    return head
+
 head = Node(1)
 head = push(head, 2)
 head = push(head, 5)
@@ -410,15 +423,13 @@ head = push(head, 6)
 head = push(head, 7)
 head = push(head, 6)
 
-h, h2 = reorderList(head)
-h3 = reverseList(h2)
-printList(head)
-print("--------------------")
-printList(h3)
+h_second_half = reverseSecondHalf(head)
 
-print("--------------------")
-l = combineReorder(head, h3)
-printList(l)
+printList(head)
+print('------------------')
+printList(h_second_half)
+print('------------------')
+
         
 def binaryTreeTraversal(root):
     queue = []

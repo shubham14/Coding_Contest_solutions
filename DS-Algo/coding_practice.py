@@ -363,11 +363,13 @@ head = push(head, 2)
 head = push(head, 5)
 head = push(head, 3)
 
+head1 = head
+
 print ('--- Original List ---')
 printList(head)
 
 print ('--- Reversed List ---')
-h = reverse(head)
+h = reverseSecondHalf(head1)
 printList(h)
 
 def completeNode(root):
